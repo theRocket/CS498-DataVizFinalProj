@@ -4,15 +4,19 @@
 <body>
 <h1>CS 498 Data Visualization</h1>
 <h2>Final Project</h2>
-<p>Starting Point
-	<svg id="firstgraphic"></svg>
-</p>
+<svg id="firstgraphic"></svg>
 <script>
 	d3.select("body")
 	  .style("background-color", "black")
 	  .transition()
-	  .duration(750)
+	  .duration(1000)
 	  .style("background-color", "white");
+	var circles = d3.select("#firstgraphic").selectAll("circle").data([4, 8, 15, 16, 23, 42]);
+	circles.enter().append("circle").merge(circles)
+	  .transition()
+	  .duration(750)
+	  .delay(function(d, i) { return i * 10; })
+	  .attr("r", function(d) { return Math.sqrt(d * scale); });
 </script>
 </body>
 </html>
