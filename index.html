@@ -1,8 +1,17 @@
 <!DOCTYPE html>
 <html>
+<head><script src="https://d3js.org/d3.v4.min.js"></script></head>
 <body>
 <h1>CS 498 Data Visualization</h1>
 <h2>Final Project</h2>
-<p>Starting Point</p>
+<p>Starting Point
+	<svg id="firstgraphic"></svg>
+</p>
+<script>
+	d3.select("body").style("background-color", "black");
+	d3.selectAll("p").style("color", function() {
+	  return "hsl(" + Math.random() * 360 + ",100%,50%)";
+	});
+</script>
 </body>
 </html>
