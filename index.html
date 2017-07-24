@@ -8,10 +8,11 @@
 	<svg id="firstgraphic"></svg>
 </p>
 <script>
-	d3.select("body").style("background-color", "black");
-	d3.selectAll("p").style("color", function() {
-	  return "hsl(" + Math.random() * 360 + ",100%,50%)";
-	});
+	d3.select("body")
+	  .style("background-color", "black")
+	  .transition()
+	  .duration(750)
+	  .style("background-color", "white");
 </script>
 </body>
 </html>
