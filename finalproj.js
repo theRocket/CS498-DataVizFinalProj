@@ -4,12 +4,23 @@ d3.select("body")
   .duration(1000)
   .style("background-color", "white");
 
-var svg1 = d3.select("#firstgraph");
+var width = 1000,
+	height = 800,
+	zoomleft = -width,
+	zoomdown = -(height/4),
+	zoomscale = 2,
+	zoomtime = 10000;
+
+//select & resize
+var svg1 = d3.select("#firstgraph")
+	.attr("width", width)
+	.attr("height", height);
+
+var svg2 = d3.select("#secondgraph")
+	.attr("width", width)
+	.attr("height", height);
 
 var path1 = d3.geoPath();
-
-var svg2 = d3.select("#secondgraph");
-
 var path2 = d3.geoPath();
 
 d3.json("https://d3js.org/us-10m.v1.json", function(error, us) {
@@ -21,12 +32,18 @@ d3.json("https://d3js.org/us-10m.v1.json", function(error, us) {
 		.data(topojson.feature(us, us.objects.states).features)
 		.enter().append("path")
 		.attr("d", path1)
-		.on("click", clicked);
+		.transition()
+		.duration(zoomtime)
+		.attr("transform", "translate(" + zoomleft+ "," + zoomdown + ")scale(" + zoomscale + ")");
 
 	svg1.append("path")
 		.attr("class", "state-borders")
-		.attr("d", path1(topojson.mesh(us, us.objects.states, function(a, b) { return a !== b; })));
+		.attr("d", path1(topojson.mesh(us, us.objects.states, function(a, b) { return a !== b; })))
+		.transition()
+		.duration(zoomtime)
+		.attr("transform", "translate(" + zoomleft+ "," + zoomdown + ")scale(" + zoomscale + ")");
 });
+
 
 d3.json("https://d3js.org/us-10m.v1.json", function(error, us) {
   if (error) throw error;
