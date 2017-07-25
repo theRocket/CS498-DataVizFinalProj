@@ -4,13 +4,40 @@ d3.select("body")
   .duration(1000)
   .style("background-color", "white");
 
-var circles = d3.select("#firstgraphic").selectAll("circle").data([4, 8, 15, 16, 23, 42]);
+	var svg1 = d3.select("#firstgraph");
 
-circles.enter().append("circle").merge(circles)
-  .transition()
-  .duration(750)
-  .delay(function(d, i) { return i * 10; })
-  .attr("cx",function(d,i) {return d*i;})
-  .attr("cy",function(d,i) {return d*i;})
-  .attr("r", function(d) {return Math.sqrt(d);})
-  .style("fill", function(d, i) {return "hsl("+ Math.random() * 360 +",100%,50%)"});
+	var path1 = d3.geoPath();
+	
+	var svg2 = d3.select("#secondgraph");
+
+	var path2 = d3.geoPath();
+
+	d3.json("https://d3js.org/us-10m.v1.json", function(error, us) {
+	  if (error) throw error;
+
+	  svg1.append("g")
+	      .attr("class", "states")
+	    .selectAll("path")
+	    .data(topojson.feature(us, us.objects.states).features)
+	    .enter().append("path")
+	      .attr("d", path1);
+
+	  svg1.append("path")
+	      .attr("class", "state-borders")
+	      .attr("d", path1(topojson.mesh(us, us.objects.states, function(a, b) { return a !== b; })));
+	});
+	
+	d3.json("https://d3js.org/us-10m.v1.json", function(error, us) {
+	  if (error) throw error;
+
+	  svg2.append("g")
+	    .attr("class", "counties")
+	    .selectAll("path")
+	    .data(topojson.feature(us, us.objects.counties).features)
+	    .enter().append("path")
+	      .attr("d", path2);
+
+	  svg2.append("path")
+	      .attr("class", "county-borders")
+	      .attr("d", path2(topojson.mesh(us, us.objects.counties, function(a, b) { return a !== b; })));
+	});
