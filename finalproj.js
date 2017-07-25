@@ -4,40 +4,41 @@ d3.select("body")
   .duration(1000)
   .style("background-color", "white");
 
-	var svg1 = d3.select("#firstgraph");
+var svg1 = d3.select("#firstgraph");
 
-	var path1 = d3.geoPath();
-	
-	var svg2 = d3.select("#secondgraph");
+var path1 = d3.geoPath();
 
-	var path2 = d3.geoPath();
+var svg2 = d3.select("#secondgraph");
 
-	d3.json("https://d3js.org/us-10m.v1.json", function(error, us) {
-	  if (error) throw error;
+var path2 = d3.geoPath();
 
-	  svg1.append("g")
-	      .attr("class", "states")
-	    .selectAll("path")
-	    .data(topojson.feature(us, us.objects.states).features)
-	    .enter().append("path")
-	      .attr("d", path1);
+d3.json("https://d3js.org/us-10m.v1.json", function(error, us) {
+  if (error) throw error;
 
-	  svg1.append("path")
-	      .attr("class", "state-borders")
-	      .attr("d", path1(topojson.mesh(us, us.objects.states, function(a, b) { return a !== b; })));
-	});
-	
-	d3.json("https://d3js.org/us-10m.v1.json", function(error, us) {
-	  if (error) throw error;
+	svg1.append("g")
+		.attr("class", "states")
+		.selectAll("path")
+		.data(topojson.feature(us, us.objects.states).features)
+		.enter().append("path")
+		.attr("d", path1)
+		.on("click", clicked);
 
-	  svg2.append("g")
-	    .attr("class", "counties")
-	    .selectAll("path")
-	    .data(topojson.feature(us, us.objects.counties).features)
-	    .enter().append("path")
-	      .attr("d", path2);
+	svg1.append("path")
+		.attr("class", "state-borders")
+		.attr("d", path1(topojson.mesh(us, us.objects.states, function(a, b) { return a !== b; })));
+});
 
-	  svg2.append("path")
-	      .attr("class", "county-borders")
-	      .attr("d", path2(topojson.mesh(us, us.objects.counties, function(a, b) { return a !== b; })));
-	});
+d3.json("https://d3js.org/us-10m.v1.json", function(error, us) {
+  if (error) throw error;
+
+  svg2.append("g")
+    .attr("class", "counties")
+    .selectAll("path")
+    .data(topojson.feature(us, us.objects.counties).features)
+    .enter().append("path")
+      .attr("d", path2);
+
+  svg2.append("path")
+      .attr("class", "county-borders")
+      .attr("d", path2(topojson.mesh(us, us.objects.counties, function(a, b) { return a !== b; })));
+});
